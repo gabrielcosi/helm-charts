@@ -1,0 +1,27 @@
+{{- if not .Values.persistence.existingClaim }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "pricebuddy.fullname" . }}-storage
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ include "pricebuddy.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  accessModes:
+  {{- if not (empty .Values.pricebuddy.persistence.accessModes) }}
+  {{- range .Values.pricebuddy.persistence.accessModes }}
+    - {{ . | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.pricebuddy.persistence.size | quote }}
+  {{- if .Values.pricebuddy.persistence.storageClass }}
+  {{- if (eq "-" .Values.pricebuddy.persistence.storageClass) }}
+  storageClassName: ""
+  {{- else }}
+  storageClassName: "{{ .Values.pricebuddy.persistence.storageClass }}"
+  {{- end }}
+  {{- end }}
+{{- end }}

@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "pricebuddy.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ include "pricebuddy.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.pricebuddy.replicas }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "pricebuddy.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  {{- with include "pricebuddy.strategy" . }}
+  strategy:
+    {{- trim . | nindent 4 }}
+  {{- end }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "pricebuddy.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        {{- with .Values.pricebuddy.labels.pods }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.pricebuddy.securityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          {{- with .Values.pricebuddy.containerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          image: "{{ .Values.pricebuddy.image.repository }}:{{ .Values.pricebuddy.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.pricebuddy.image.pullPolicy }}
+          env:
+            {{- with .Values.pricebuddy.env }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
+          envFrom:
+            {{- with .Values.pricebuddy.envFrom }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          {{- with .Values.pricebuddy.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - name: {{ .Release.Name }}-storage-volume
+              mountPath: /app/storage
+      volumes:
+        - name: {{ .Release.Name }}-storage-volume
+          persistentVolumeClaim:
+            claimName: {{ .Values.pricebuddy.persistence.existingClaim | default (printf "%s-storage" (include "pricebuddy.fullname" .)) }}
+      {{- with .Values.pricebuddy.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.pricebuddy.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.pricebuddy.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      topologySpreadConstraints:
+        {{- range $constraint := . }}
+      - {{ toYaml $constraint | nindent 8 | trim }}
+        {{- if not $constraint.labelSelector }}
+        labelSelector:
+          matchLabels:
+            {{- include "pricebuddy.selectorLabels" (dict "context" $ "component" $.Values.pricebuddy.name) | nindent 12 }}
+        {{- end }}
+        {{- end }}
+      {{- end }}

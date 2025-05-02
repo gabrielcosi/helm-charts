@@ -1,0 +1,7 @@
+apiVersion: v2
+name: pricebuddy
+version: 0.1.0
+appVersion: 'v1.0.37'
+type: application
+home: https://pricebuddy.jez.me/
+description: Pricebuddy is a self hostable app that tracks prices and sends you notifications when prices match your preferences.

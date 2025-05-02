@@ -1,0 +1,183 @@
+---
+# -- Provide a name in place of `pricebuddy`.
+nameOverride: ''
+# -- String to fully override `"pricebuddy.fullname"`.
+fullnameOverride:
+  ''
+
+  # Number of old deployment ReplicaSets to retain. The rest will be garbage collected.
+revisionHistoryLimit: 3
+
+pricebuddy:
+  # -- Deployment strategy for pricebuddy
+  strategy:
+    {}
+    # type: RollingUpdate
+    # rollingUpdate:
+    #   maxSurge: 25%
+    #   maxUnavailable: 25%
+
+  # -- pricebuddy replicas
+  replicas: 1
+
+  # -- pricebuddy image
+  image:
+    repository: jez500/pricebuddy
+    tag: ''
+    pullPolicy: IfNotPresent
+
+  # -- pricebuddy resource requests and limits
+  resources:
+    {}
+    # requests:
+    #   cpu: 100m
+    #   memory: 512Mi
+    # limits:
+    #   memory: 512Mi
+
+  # -- Environment variables to pass to pricebuddy.
+  # See configuration options at https://github.com/jez500/pricebuddy
+  # @default -- `[]` (See [values.yaml])
+  env: []
+
+  # -- envFrom to pass to pricebuddy.
+  # @default -- `[]` (See [values.yaml])
+  envFrom: []
+
+  # -- pricebuddy pod-level security context
+  # @default -- `{}` (See [values.yaml])
+  securityContext:
+    {}
+    # runAsUser: 1000
+    # runAsGroup: 1000
+    # fsGroup: 1000
+
+  # -- pricebuddy container-level security context
+  # @default -- See [values.yaml]
+  containerSecurityContext:
+    {}
+    # Not all of the following has been tested. Use at your own risk.
+    # runAsNonRoot: true
+    # readOnlyRootFilesystem: true
+    # allowPrivilegeEscalation: false
+    # seccomProfile:
+    #   type: RuntimeDefault
+    # capabilities:
+    #   drop:
+    #     - ALL
+
+  ## pricebuddy service configuration
+  service:
+    # -- pricebuddy service type
+    type: ClusterIP
+    # -- pricebuddy service port
+    port: 80
+    # -- pricebuddy service annotations
+    annotations: {}
+
+  persistence:
+    # -- pricebuddy persistence size
+    size: 1Gi
+    # -- pricebuddy persistence storage class
+    storageClass: standard
+    # -- pricebuddy persistence access modes
+    accessModes:
+      - ReadWriteOnce
+    # -- pricebuddy persistence existing claim
+    existingClaim: ''
+
+  postgresql:
+    # -- set the postgresql hostname to talk to
+    # if unset and .Values.postgresql.enabled == true, will generate the default
+    # @default -- `{{ .Release.Name }}-postgresql`
+    host: '{{ .Release.Name }}-postgresql'
+    # -- postgresql Database name
+    # @default -- `pricebuddy`
+    name: 'pricebuddy'
+    # -- postgresql Username
+    # @default -- `pricebuddy`
+    user: 'pricebuddy'
+    password: ''
+    port: 5432
+
+  # -- Default [TopologySpreadConstraints] rules for pricebuddy
+  ## Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/
+  topologySpreadConstraints:
+    []
+    # - maxSkew: 1
+    #   topologyKey: topology.kubernetes.io/zone
+    #   whenUnsatisfiable: DoNotSchedule
+
+scraper:
+  # -- whether to enable scraper
+  enabled: true
+
+  # -- scraper name
+  name: scraper
+
+  # -- Deployment strategy for scraper
+  strategy:
+    {}
+    # type: RollingUpdate
+    # rollingUpdate:
+    #   maxSurge: 25%
+    #   maxUnavailable: 25%
+
+  # -- scraper replicas
+  replicas: 1
+
+  # -- scraper image
+  image:
+    repository: amerkurev/scrapper
+    tag: ''
+    digest: ''
+    pullPolicy: IfNotPresent
+
+  # -- scraper resource requests and limits
+  resources:
+    {}
+    # requests:
+    #   cpu: 100m
+    #   memory: 512Mi
+    # limits:
+    #   memory: 512Mi
+
+  # -- Environment variables to pass to scraper.
+  # See configuration options at https://github.com/jez500/pricebuddy
+  # @default -- `[]` (See [values.yaml])
+  env: []
+
+  # -- envFrom to pass to scraper.
+  # @default -- `[]` (See [values.yaml])
+  envFrom: []
+
+  # -- scraper pod-level security context
+  # @default -- `{}` (See [values.yaml])
+  securityContext:
+    {}
+    # runAsUser: 1000
+    # runAsGroup: 1000
+    # fsGroup: 1000
+
+  # -- scraper container-level security context
+  # @default -- See [values.yaml]
+  containerSecurityContext:
+    {}
+    # Not all of the following has been tested. Use at your own risk.
+    # runAsNonRoot: true
+    # readOnlyRootFilesystem: true
+    # allowPrivilegeEscalation: false
+    # seccomProfile:
+    #   type: RuntimeDefault
+    # capabilities:
+    #   drop:
+    #     - ALL
+
+  ## scraper service configuration
+  service:
+    # -- scraper service type
+    type: ClusterIP
+    # -- scraper service port
+    port: 80
+    # -- scraper service annotations
+    annotations: {}
