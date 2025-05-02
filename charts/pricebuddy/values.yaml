@@ -23,7 +23,7 @@ pricebuddy:
   # -- pricebuddy image
   image:
     repository: jez500/pricebuddy
-    tag: ''
+    tag: 'v1.0.37'
     pullPolicy: IfNotPresent
 
   # -- pricebuddy resource requests and limits
@@ -129,8 +129,7 @@ scraper:
   # -- scraper image
   image:
     repository: amerkurev/scrapper
-    tag: ''
-    digest: ''
+    tag: 'v1.0.0'
     pullPolicy: IfNotPresent
 
   # -- scraper resource requests and limits
