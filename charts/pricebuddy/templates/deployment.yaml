@@ -39,6 +39,34 @@ spec:
           image: "{{ .Values.pricebuddy.image.repository }}:{{ .Values.pricebuddy.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.pricebuddy.image.pullPolicy }}
           env:
+            - name: APP_URL
+              value: {{ .Values.pricebuddy.appUrl | quote }}
+            - name: SCRAPER_BASE_URL
+              value: {{ .Values.pricebuddy.scraperBaseUrl | quote }}
+            - name: DB_DATABASE
+              value: {{ .Values.postgresql.database | quote }}
+            - name: DB_USERNAME
+              value: {{ .Values.postgresql.user | quote }}
+            - name: DB_PORT
+              value: {{ .Values.postgresql.port | quote }}
+            - name: DB_HOST
+              value: {{ .Values.postgresql.host | quote }}
+            {{- if .Values.pricebuddy.existingSecret }}
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "pricebuddy.secret-name" . }}
+                  key: db_password
+                  optional: true
+            {{- end }}
+            {{- if .Values.pricebuddy.existingSecret }}
+            - name: APP_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "pricebuddy.secret-name" . }}
+                  key: app_user_password
+                  optional: true
+            {{- end }}
             {{- with .Values.pricebuddy.env }}
               {{- toYaml . | nindent 12 }}
             {{- end }}

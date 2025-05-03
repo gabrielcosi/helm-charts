@@ -33,3 +33,14 @@ Create scraper and version as used by the chart label.
 {{- define "scraper.fullname" -}}
 {{- printf "%s-%s" (include "pricebuddy.fullname" .) .Values.scraper.name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{/*
+Expand the name of the default secret
+*/}}
+{{- define "pricebuddy.secret-name" -}}
+{{- if .Values.pricebuddy.existingSecret -}}
+{{- .Values.pricebuddy.existingSecret -}}
+{{- else -}}
+{{- include "pricebuddy.name" . -}}
+{{- end -}}
+{{- end -}}

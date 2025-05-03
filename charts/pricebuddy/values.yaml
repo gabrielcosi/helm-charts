@@ -9,6 +9,11 @@ fullnameOverride:
 revisionHistoryLimit: 3
 
 pricebuddy:
+  # -- pricebuddy app url (useful when behind a reverse proxy)
+  appUrl:
+  # -- pricebuddy scraper base url
+  scraperBaseUrl:
+
   # -- Deployment strategy for pricebuddy
   strategy:
     {}
@@ -90,15 +95,16 @@ pricebuddy:
     # -- set the postgresql hostname to talk to
     # if unset and .Values.postgresql.enabled == true, will generate the default
     # @default -- `{{ .Release.Name }}-postgresql`
-    host: '{{ .Release.Name }}-postgresql'
+    host:
     # -- postgresql Database name
     # @default -- `pricebuddy`
-    name: 'pricebuddy'
+    database:
     # -- postgresql Username
     # @default -- `pricebuddy`
-    user: 'pricebuddy'
-    password: ''
-    port: 5432
+    user:
+    port:
+
+  existingSecret: ''
 
   # -- Default [TopologySpreadConstraints] rules for pricebuddy
   ## Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/
