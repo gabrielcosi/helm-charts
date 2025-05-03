@@ -1,6 +1,6 @@
 apiVersion: v2
 name: pricebuddy
-version: 0.1.3
+version: 0.1.4
 appVersion: 'v1.0.37'
 type: application
 home: https://pricebuddy.jez.me/

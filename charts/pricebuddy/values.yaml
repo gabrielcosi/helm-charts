@@ -93,17 +93,18 @@ pricebuddy:
 
   postgresql:
     # -- set the postgresql hostname to talk to
-    # if unset and .Values.postgresql.enabled == true, will generate the default
-    # @default -- `{{ .Release.Name }}-postgresql`
     host:
     # -- postgresql Database name
     # @default -- `pricebuddy`
-    database:
+    database: 'pricebuddy'
     # -- postgresql Username
     # @default -- `pricebuddy`
-    user:
-    port:
+    user: 'pricebuddy'
+    port: 5432
 
+  # -- Existing secret with the following keys:
+  #   db_password:
+  #   app_user_password:
   existingSecret: ''
 
   # -- Default [TopologySpreadConstraints] rules for pricebuddy
