@@ -14,6 +14,7 @@ spec:
   {{- range .Values.pricebuddy.persistence.accessModes }}
     - {{ . | quote }}
   {{- end }}
+  {{- end }}
   resources:
     requests:
       storage: {{ .Values.pricebuddy.persistence.size | quote }}
