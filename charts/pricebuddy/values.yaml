@@ -12,7 +12,7 @@ pricebuddy:
   # -- pricebuddy app url (useful when behind a reverse proxy)
   appUrl:
   # -- pricebuddy scraper base url
-  scraperBaseUrl:
+  scraperBaseUrl: 'http://{{ .Release.Name }}-scraper:{{ .Values.scraper.service.port }}'
 
   # -- Deployment strategy for pricebuddy
   strategy:

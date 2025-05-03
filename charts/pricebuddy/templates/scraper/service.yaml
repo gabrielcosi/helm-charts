@@ -15,7 +15,7 @@ spec:
   type: {{ .Values.scraper.service.type }}
   ports:
     - port: {{ .Values.scraper.service.port }}
-      targetPort: http
+      targetPort: 3000
       protocol: TCP
       name: http
   selector:
