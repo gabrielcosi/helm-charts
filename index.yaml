@@ -3,6 +3,18 @@ entries:
   pricebuddy:
   - apiVersion: v2
     appVersion: v1.0.37
+    created: "2025-05-03T20:05:31.529644105Z"
+    description: Pricebuddy is a self hostable app that tracks prices and sends you
+      notifications when prices match your preferences.
+    digest: 76113913cbb09842791551fb01928bf45f5cfd44b5032dd16d38cbefbe4a044e
+    home: https://pricebuddy.jez.me/
+    name: pricebuddy
+    type: application
+    urls:
+    - https://github.com/gabrielcosi/helm-charts/releases/download/pricebuddy-0.1.7/pricebuddy-0.1.7.tgz
+    version: 0.1.7
+  - apiVersion: v2
+    appVersion: v1.0.37
     created: "2025-05-03T19:49:40.088416104Z"
     description: Pricebuddy is a self hostable app that tracks prices and sends you
       notifications when prices match your preferences.
@@ -73,4 +85,4 @@ entries:
     urls:
     - https://github.com/gabrielcosi/helm-charts/releases/download/pricebuddy-0.1.1/pricebuddy-0.1.1.tgz
     version: 0.1.1
-generated: "2025-05-03T19:49:40.088438886Z"
+generated: "2025-05-03T20:05:31.529678589Z"
