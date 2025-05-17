@@ -28,7 +28,7 @@ pricebuddy:
   # -- pricebuddy image
   image:
     repository: jez500/pricebuddy
-    tag: 'v1.0.37'
+    tag: 'v1.0.39'
     pullPolicy: IfNotPresent
 
   # -- pricebuddy resource requests and limits
